@@ -1,5 +1,6 @@
 package com.tvs.bibliotecaapi.resources;
 
+import com.tvs.bibliotecaapi.dto.BookDTO;
 import com.tvs.bibliotecaapi.dto.MessageResponseDTO;
 import com.tvs.bibliotecaapi.exception.BookNotFoundException;
 import com.tvs.bibliotecaapi.models.Book;
@@ -32,6 +33,11 @@ public class BookResource {
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponseDTO createBook(@RequestBody Book book) {
         return bookService.createPerson(book);
+    }
+
+    @PutMapping("/{id}")
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody BookDTO bookDTO) throws BookNotFoundException {
+        return bookService.updateById(id, bookDTO);
     }
 
 }

@@ -3,6 +3,7 @@ package com.tvs.bibliotecaapi.service;
 import com.tvs.bibliotecaapi.dto.BookDTO;
 import com.tvs.bibliotecaapi.dto.MessageResponseDTO;
 import com.tvs.bibliotecaapi.exception.BookNotFoundException;
+import com.tvs.bibliotecaapi.mapper.BookMapper;
 import com.tvs.bibliotecaapi.models.Book;
 import com.tvs.bibliotecaapi.repository.BookRepository;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 public class BookService {
 
     private BookRepository bookRepository;
+
+    private final BookMapper bookMapper = BookMapper.INSTANCE;
 
     private Book verifyIfExists(Long id) throws BookNotFoundException {
         return bookRepository.findById(id)
@@ -49,6 +52,13 @@ public class BookService {
         return createMessageResponse(bookSaved.getId(), "Created book with ID ");
     }
 
+    public MessageResponseDTO updateById(Long id, BookDTO bookDTO) throws BookNotFoundException {
+        verifyIfExists(id);
 
+        Book bookToUpdate = bookMapper.toModel(bookDTO);
+        bookToUpdate.setId(id);
+        Book updatedBook = bookRepository.save(bookToUpdate);
+        return createMessageResponse(updatedBook.getId(), "Updated book with ID ");
+    }
 
 }
