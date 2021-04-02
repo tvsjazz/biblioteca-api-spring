@@ -61,4 +61,9 @@ public class BookService {
         return createMessageResponse(updatedBook.getId(), "Updated book with ID ");
     }
 
+    public void delete(Long id) throws BookNotFoundException {
+        verifyIfExists(id);
+        bookRepository.deleteById(id);
+    }
+
 }
